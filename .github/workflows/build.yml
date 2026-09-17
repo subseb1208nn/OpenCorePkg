@@ -37,6 +37,12 @@ jobs:
       - name: Fix Xcode path
         run: echo "DEVELOPER_DIR=/Applications/Xcode_16.4.app/Contents/Developer" >> "$GITHUB_ENV"   
 
+      - name: Use compatible AUDK
+        run: |
+          rm -rf UDK
+          git clone --depth=1 --branch audk-stable-202405 https://github.com/acidanthera/audk UDK
+          touch UDK/UDK.ready
+
       - run: ./build_oc.tool
 
       - name: Upload to Artifacts
