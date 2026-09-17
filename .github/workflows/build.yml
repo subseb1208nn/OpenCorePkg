@@ -25,11 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Linux Toolchain
-        run: |
-          brew tap FiloSottile/homebrew-musl-cross
-          brew trust --formula filosottile/musl-cross/musl-cross
-          brew install musl-cross
+    
 
       - name: Install Dependencies
         run: brew install openssl mingw-w64
@@ -37,8 +33,10 @@ jobs:
       - name: CI Bootstrap
         run: |
           src=$(/usr/bin/curl -LfsS https://raw.githubusercontent.com/acidanthera/ocbuild/master/ci-bootstrap.sh) && eval "$src" || exit 1
+     
+      - name: Fix Xcode path
+        run: echo "DEVELOPER_DIR=/Applications/Xcode_16.4.app/Contents/Developer" >> "$GITHUB_ENV"   
 
-      - run: ./build_duet.tool
       - run: ./build_oc.tool
 
       - name: Upload to Artifacts
